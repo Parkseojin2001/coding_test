@@ -1,19 +1,12 @@
-NM = list(map(int, input().split()))
-
-N = NM[0]
-M = NM[1]
+N, M = map(int, input().split())
 
 blanks = [i + 1 for i in range(N)]
 
 for i in range(M):
-    ij = list(map(int, input().split()))
+    i, j = map(int, input().split())
     
-    i = ij[0] - 1
-    j = ij[1] - 1
-    if i == 0:
-        blanks[i: j + 1] = blanks[j::-1]
-    else:
-        blanks[i: j + 1] = blanks[j:i-1:-1]
+    i = i - 1
+    j = j - 1
+    blanks[i: j + 1] = reversed(blanks[i:j+1])
 
-for i in range(N):
-    print(f"{blanks[i]} ", end="")
+print(" ".join(map(str, blanks)))
