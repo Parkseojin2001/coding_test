@@ -1,16 +1,7 @@
 N = int(input())
-
 num_list = list(map(int, input().split()))
 
-sorted_list = sorted(num_list)
+sorted_unique = sorted(set(num_list))
+coord = {num: i for i, num in enumerate(sorted_unique)}
 
-dic = {}
-count = 0
-
-for i in range(N):
-    if sorted_list[i] not in dic.keys():
-        dic[sorted_list[i]] = count
-        count += 1
-        
-for num in num_list:
-    print(dic[num], end=" ")
+print(' '.join(str(coord[num]) for num in num_list))
