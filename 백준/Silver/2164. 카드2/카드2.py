@@ -1,17 +1,13 @@
 import sys
 from collections import deque
 
-input = sys.stdin.readline
-N = int(input())
+N = int(sys.stdin.readline())
 
-cards = [card for card in range(1, N + 1)]
-
-deque_cards = deque(cards)
+cards = deque(range(1, N + 1))
 
 p = 0
-while len(deque_cards) > 1:
-    deque_cards.popleft()
-    card = deque_cards.popleft()
-    deque_cards.append(card)
+while len(cards) > 1:
+    cards.popleft()
+    cards.append(cards.popleft())
 
-print(deque_cards[0])
+print(cards[0])
