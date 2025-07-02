@@ -1,35 +1,27 @@
 import sys
 
 n = int(sys.stdin.readline())
-
-nums = [i for i in range(n, 0, -1)]
+arr = [int(sys.stdin.readline()) for _ in range(n)]
 stack = []
 operation = []
-
-# 수열
-arr = []
-
-operation = []
-for _ in range(n):
-    arr.append(int(input()))
-    
 make = True
+
+next_push = 1
     
-for i in range(len(arr)):
+
+for target in arr:
     
-    while len(stack) == 0 or stack[-1] != arr[i]:
-        if len(nums) == 0:
-            make = False
-            break
-        k = nums.pop()
-        stack.append(k)
+    while next_push <= target:
+        stack.append(next_push)
         operation.append('+')
-    if stack[-1] == arr[i]: 
+        next_push += 1
+    if stack[-1] == target: 
         stack.pop()
         operation.append('-')
-
+    else:
+        make = False
+        break
 if make == False:
     print("NO")
 else:
-    for o in operation:
-        print(o)
+    sys.stdout.write('\n'.join(operation)+'\n')
