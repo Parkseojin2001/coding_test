@@ -1,4 +1,5 @@
 def solution(s):
+    answer = s
     number = {'zero': '0',
               'one': '1',
               'two': '2',
@@ -10,19 +11,7 @@ def solution(s):
               'eight': '8',
               'nine': '9'}
     
-    nums = []
+    for key, value in number.items():
+        answer = answer.replace(key, value)
     
-    temp = []
-    
-    for c in s:
-        if c >= '0' and c <= '9':
-            nums.append(c)
-        else:
-            temp.append(c)
-        if ''.join(temp) in number.keys():
-            nums.append(number[''.join(temp)])
-            temp = []
-            
-    answer = int(''.join(nums))
-    
-    return answer
+    return int(answer)
