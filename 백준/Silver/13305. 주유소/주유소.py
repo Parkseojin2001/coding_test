@@ -1,4 +1,4 @@
-import sys         
+import sys      
 
 input = sys.stdin.readline
 
@@ -9,9 +9,11 @@ oil = list(map(int, input().split()))
 
 
 total = 0
+min_oil = oil[0]
 
 for i in range(city - 1):
-    min_oil_price = min(oil[:i + 1])
-    total += min_oil_price * road[i]
+    if oil[i] < min_oil:
+        min_oil = oil[i]
+    total += min_oil * road[i]
 
 print(total)  
