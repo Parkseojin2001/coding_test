@@ -1,28 +1,18 @@
 import sys
 
-N = int(sys.stdin.readline())
+sys.setrecursionlimit(10**6)
+
+input = sys.stdin.readline
+
+N = int(input())
 cnt = 0
 
-if N % 5 == 0:
-    cnt = N // 5
+while N >= 0:
+    if N % 5 == 0:
+        cnt += N // 5
+        print(cnt)
+        break
+    N -= 3
+    cnt += 1
 else:
-    if N % 5 == 4 or N % 5 == 1:
-        cnt += N // 5
-        if cnt > 0:
-            cnt -= 1
-            remain = N - 5 * cnt
-            cnt += remain // 3
-        else:
-            cnt = -1
-    elif N % 5 == 3:
-        cnt += N // 5
-        cnt += 1
-    elif N % 5 == 2:
-        cnt += N // 5
-        if cnt > 1:
-            cnt -= 2
-            remain = N - 5 * cnt
-            cnt += remain // 3
-        else:
-            cnt = -1
-print(cnt)
+    print(-1)
