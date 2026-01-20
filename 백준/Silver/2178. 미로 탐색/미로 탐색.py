@@ -1,38 +1,26 @@
 import sys
-import heapq
 from collections import deque
-from collections import defaultdict
+input = sys.stdin.readline
 
-def bfs(x, y):
-    queue = deque()
-    queue.append((x, y))
-    
-    while queue:
-        x, y = queue.popleft()
-        for i in range(4):
-            vx = x + dx[i]
-            vy = y + dy[i]
-            
-            if vx < 0 or vx >= N or vy < 0 or vy >= M:
-                continue
-            if graph[vx][vy] == 0:
-                continue
-            
-            if graph[vx][vy] == 1:
-                graph[vx][vy] = graph[x][y] + 1
-                queue.append((vx, vy))
-                
-    return graph[N-1][M-1]
-        
 
 N, M = map(int, input().split())
-
-graph = []
-
-for i in range(N):
-    graph.append(list(map(int, input().strip())))
-    
-dx = [-1, 1, 0, 0]
+dx = [1, -1, 0, 0]
 dy = [0, 0, -1, 1]
 
-print(bfs(0, 0))
+miro = [list(input().rstrip()) for _ in range(N)]
+
+queue = deque()
+queue.append((0, 0))
+miro[0][0] = 1
+
+while queue:
+    y, x = queue.popleft()
+    for i in range(4):
+        ny = y + dy[i]
+        nx = x + dx[i]
+        if 0 <= ny < N and 0 <= nx < M:
+            if miro[ny][nx] == '1':
+                miro[ny][nx] = miro[y][x] + 1
+                queue.append((ny, nx))
+
+print(miro[N-1][M-1])
