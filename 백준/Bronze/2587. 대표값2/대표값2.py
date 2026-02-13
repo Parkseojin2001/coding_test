@@ -1,9 +1,11 @@
-scores = []
+import sys
+input = sys.stdin.readline
+nums = []
 
-for i in range(5):
-    scores.append(int(input()))
+for _ in range(5):
+  nums.append(int(input()))
 
-scores.sort()
+nums.sort()
 
-print(int(sum(scores) / 5))
-print(scores[2])
+print(sum(nums) // 5)
+print(nums[2])
