@@ -1,24 +1,28 @@
 import sys
 from collections import deque
-import sys
-sys.setrecursionlimit(10**6)
 
-
-def bfs(start, target):
-    queue = deque([[start, 0]])
-    visited = [False] * 100001
-    visited[start] = True
-    while queue:
-        v, cnt = queue.popleft()
-        if v == target:
-            return cnt
-        
-        for next in (v - 1, v + 1, v * 2):
-            if 0 <= next <= 100000 and not visited[next]:
-                visited[next] = True
-                queue.append([next, cnt + 1])
-        
+input = sys.stdin.readline
+MAX = 100001
 
 N, K = map(int, input().split())
 
-print(bfs(N, K))
+dist = [-1] * MAX
+
+
+def bfs():
+    queue = deque([N])
+    dist[N] = 0
+
+    while queue:
+        curr = queue.popleft()
+        if curr == K:
+            return dist[curr]
+
+        for next in (curr - 1, curr + 1, curr * 2):
+            if 0 <= next < MAX:
+                if dist[next] == -1:
+                    dist[next] = dist[curr] + 1
+                    queue.append(next)
+
+
+print(bfs())
