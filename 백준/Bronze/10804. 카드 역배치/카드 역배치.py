@@ -7,21 +7,19 @@ def sys_input() -> str:
     return sys.stdin.readline().rstrip()
 
 
-def solve(start: int, end: int, arr: list[int]) -> None:
-    head = arr[0:start]
-    part = arr[start : end + 1]
-    part = part[::-1]
-    tail = arr[end + 1 :]
+def solve(intervals: list[tuple[int, int]]) -> list[int]:
+    cards = list(range(1, 21))
+    for a, b in intervals:
+        cards[a - 1 : b] = cards[a - 1 : b][::-1]
 
-    return head + part + tail
+    return cards
 
 
 def main() -> None:
-    lines = [i for i in range(1, 21)]
-    for _ in range(10):
-        start, end = map(int, sys_input().split())
-        lines = solve(start - 1, end - 1, lines)
-    print(*lines)
+    intervals = [tuple(map(int, sys_input().split())) for _ in range(10)]
+
+    answer: list[int] = solve(intervals)
+    print(*answer)
 
 
 if __name__ == "__main__":
