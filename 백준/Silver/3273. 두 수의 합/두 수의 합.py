@@ -5,22 +5,16 @@ def sys_input() -> str:
     return sys.stdin.readline().rstrip()
 
 
-def solve(n: int, x: int, nums: list[int]) -> int:
+def solve(x: int, nums: list[int]) -> int:
+    rest = set()
     cnt = 0
 
-    nums.sort()
-
-    p1, p2 = 0, n - 1
-
-    while p1 < p2:
-        if nums[p1] + nums[p2] == x:
+    for num in nums:
+        if num in rest:
             cnt += 1
-            p1 += 1
-            p2 -= 1
-        elif nums[p1] + nums[p2] > x:
-            p2 -= 1
+            rest.remove(num)
         else:
-            p1 += 1
+            rest.add(x - num)
 
     return cnt
 
@@ -30,7 +24,7 @@ def main() -> None:
     nums = list(map(int, sys_input().split()))
     x = int(sys_input())
 
-    answer: int = solve(n, x, nums)
+    answer: int = solve(x, nums)
     print(answer)
 
 
