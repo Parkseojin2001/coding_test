@@ -1,27 +1,36 @@
 import sys
 
-n = int(sys.stdin.readline())
-arr = [int(sys.stdin.readline()) for _ in range(n)]
-stack = []
-operation = []
-make = True
 
-next_push = 1
-    
+def sys_input() -> str:
+    return sys.stdin.readline().rstrip()
 
-for target in arr:
-    
-    while next_push <= target:
-        stack.append(next_push)
-        operation.append('+')
-        next_push += 1
-    if stack[-1] == target: 
+
+def solve(n: int, sequence: list[int]) -> str:
+    stack = []
+    ops = []
+    curr = 1
+
+    for c in sequence:
+        while curr <= c:
+            stack.append(curr)
+            ops.append("+")
+            curr += 1
+
+        if not (stack and stack[-1] == c):
+            return "NO"
+
         stack.pop()
-        operation.append('-')
-    else:
-        make = False
-        break
-if make == False:
-    print("NO")
-else:
-    sys.stdout.write('\n'.join(operation)+'\n')
+        ops.append("-")
+
+    return "\n".join(ops)
+
+
+def main() -> None:
+    n = int(sys_input())
+    sequence = [int(sys_input()) for _ in range(n)]
+
+    answer: str = solve(n, sequence)
+    print(answer)
+
+if __name__ == "__main__":
+    main()
