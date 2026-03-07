@@ -6,22 +6,20 @@ def sys_input() -> str:
 
 
 def solve(target: str) -> int:
-    stack = []
     cnt = 0
-    idx = 0
+    prev = ""
+    open_brackets = 0
 
-    while idx < len(target):
-        if target[idx : idx + 2] == "()":
-            cnt += len(stack)
-            idx += 2
-        else:
-            if target[idx] == "(":
-                stack.append(target[idx])
+    for c in target:
+        if c == "(":
+            open_brackets += 1
+        elif c == ")":
+            open_brackets -= 1
+            if prev == "(":
+                cnt += open_brackets
             else:
-                stack.pop()
                 cnt += 1
-            idx += 1
-
+        prev = c
     return cnt
 
 
