@@ -5,7 +5,7 @@ from collections import deque
 DIRECTIONS = [(1, 2), (2, 1), (-1, 2), (-2, 1), (2, -1), (1, -2), (-1, -2), (-2, -1)]
 
 
-def sys_input() -> None:
+def sys_input() -> str:
     return sys.stdin.readline().rstrip()
 
 def bfs(l: int, start: tuple[int, int], dest: tuple[int, int]) -> None:
