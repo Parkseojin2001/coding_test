@@ -1,53 +1,54 @@
 import sys
-from collections import defaultdict
 from collections import deque
-import heapq
 
-sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
+DIRECTIONS = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (-1, 0, 0), (0, -1, 0), (0, 0, -1)]
 
+def sys_input() -> None:
+    return sys.stdin.readline().rstrip()
 
+def bfs(h: int, n: int, m: int, tomatoes: list[list[list[int]]]) -> list[list[list[int]]]:
+    starts = [(z, x, y) for z in range(h) for x in range(n) for y in range(m) if tomatoes[z][x][y] == 1]
+    deq = deque(starts)
+    days = [[[-1] * m for _ in range(n)] for _ in range(h)]
 
-M, N, H = map(int, input().split())
-boxes = [[list(map(int, input().split())) for _ in range(N)] for _ in range(H)]
-    
-dx = [0, 0, 1, -1, 0, 0]
-dy = [1, -1, 0, 0, 0, 0]
-dz = [0, 0, 0, 0, 1, -1]
+    for z, x, y in starts:
+        days[z][x][y] = 0
 
-queue = deque()
-    
-def bfs():
-    while queue:
-        z, x, y = queue.popleft()
-        for i in range(6):
-            nx, ny, nz = x + dx[i], y + dy[i], z + dz[i]
-            if 0 <= nx < N and 0 <= ny < M and 0 <= nz < H:
-                if boxes[nz][nx][ny] == 0:
-                    boxes[nz][nx][ny] = boxes[z][x][y] + 1
-                    queue.append((nz, nx, ny))
-                    
-                    
-for i in range(H):
-    for j in range(N):
-        for k in range(M):
-            if boxes[i][j][k] == 1:
-                queue.append((i, j , k))
-                
-bfs()
-
-not_complete = False
-days = 0
-
-for i in range(H):
-    for j in range(N):
-        for k in range(M):
-            if boxes[i][j][k] == 0:
-                not_complete = True
-            days = max(days, boxes[i][j][k])
+    while deq:
+        z, x, y = deq.popleft()
+        for dz, dx, dy in DIRECTIONS:
+            nz = z + dz
+            nx = x + dx
+            ny = y + dy
             
-            
-if not_complete:
-    print(-1)
-else:
-    print(days - 1)
+            if not (0 <= nz < h and 0 <= nx < n and 0 <= ny < m):
+                continue
+            if days[nz][nx][ny] == -1 and tomatoes[nz][nx][ny] == 0:
+                days[nz][nx][ny] = days[z][x][y] + 1
+                deq.append((nz, nx, ny))
+    
+    return days
+
+
+def solve(h: int, n: int, m: int, tomatoes: list[list[list[int]]]) -> int:
+    days = bfs(h, n, m, tomatoes)
+
+    min_day = 0
+
+    for z in range(h):
+        for x in range(n):
+            for y in range(m):
+                if days[z][x][y] == -1 and tomatoes[z][x][y] != -1:
+                    return -1
+                min_day = max(min_day, days[z][x][y])
+    
+    return min_day
+
+def main() -> None:
+    M, N, H = map(int, sys_input().split())
+    tomatoes = [[list(map(int, sys_input().split())) for _ in range(N)] for _ in range(H)]
+    answer: int = solve(H, N, M, tomatoes)
+    print(answer)
+
+if __name__ == "__main__":
+    main()
