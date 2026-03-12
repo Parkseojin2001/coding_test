@@ -1,39 +1,49 @@
 import sys
-import heapq
 from collections import deque
-from collections import defaultdict
-sys.setrecursionlimit(10**6)
+
+DIRECTIONS = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+def sys_input() -> str:
+    return sys.stdin.readline().rstrip()
+
+def bfs(n: int, m: int, ground: list[list[int]], visited: list[list[bool]], start: tuple[int, int]) -> None:
+    deq = deque([start])
+    visited[start[0]][start[1]] = True
+
+    while deq:
+        x, y = deq.popleft()
+        for dx, dy in DIRECTIONS:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < n and 0 <= ny < m and ground[nx][ny] == 1 and visited[nx][ny] == False:
+                visited[nx][ny] = True
+                deq.append((nx, ny))
 
 
-def dfs(x, y):
-    if x < 0 or x >= N or y < 0 or y >= M:
-        return False
+def solve(n: int, m: int, cabbage: list[tuple[int, int]]) -> int:
+    ground = [[0] * m for _ in range(n)]
+    for x, y in cabbage:
+        ground[x][y] = 1
     
-    if graph[x][y] == 1:
-        graph[x][y] = 0
-        dfs(x - 1, y)
-        dfs(x + 1, y)
-        dfs(x, y - 1)
-        dfs(x, y + 1)
-        return True
-    
-    return False
-
-T = int(input())
-
-for i in range(T):
-    M, N, K = map(int, input().split())
-    
-    graph = [[0] * M for _ in range(N)]
-    
-    for i in range(K):
-        x, y = map(int, input().split())
-        graph[y][x] = 1
-        
+    visited = [[False] * m for _ in range(n)]
     cnt = 0
 
-    for i in range(N):
-        for j in range(M):
-            if dfs(i, j):
-                cnt += 1
-    print(cnt)
+    for x, y in cabbage:
+        if visited[x][y] == False:
+            bfs(n, m, ground, visited, (x, y))
+            cnt += 1
+    return cnt
+
+def main() -> None:
+    T = int(sys_input())
+
+    for _ in range(T):
+        M, N, K = map(int, sys_input().split())
+
+        cabbage = [tuple(map(int, sys_input().split())) for _ in range(K)]
+        N, M = M, N
+
+        answer: int = solve(N, M, cabbage)
+        print(answer)
+
+if __name__ == "__main__":
+    main()
