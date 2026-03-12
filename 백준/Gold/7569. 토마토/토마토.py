@@ -3,7 +3,7 @@ from collections import deque
 
 DIRECTIONS = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (-1, 0, 0), (0, -1, 0), (0, 0, -1)]
 
-def sys_input() -> None:
+def sys_input() -> str:
     return sys.stdin.readline().rstrip()
 
 def bfs(h: int, n: int, m: int, tomatoes: list[list[list[int]]]) -> list[list[list[int]]]:
