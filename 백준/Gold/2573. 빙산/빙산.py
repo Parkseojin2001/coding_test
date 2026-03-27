@@ -64,8 +64,6 @@ def main() -> None:
     answer: int = solve(N, M, board)
     print(answer)
 
-    return
-
 
 if __name__ == '__main__':
     main()
