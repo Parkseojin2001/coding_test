@@ -1,24 +1,21 @@
 import sys
 
-
 def sys_input() -> str:
     return sys.stdin.readline().rstrip()
 
-
-def pow(a: int, b: int, c: int) -> int:
-    if b == 0:
-        return 1
-    half = pow(a, b // 2, c)
+def solve(a: int, b: int, c: int) -> int:
+    if b == 1:
+        return a % c
+    half = solve(a, b // 2, c)
     half = (half * half) % c
     if b % 2 == 0:
         return half
     return (half * a) % c
 
-
 def main() -> None:
     A, B, C = map(int, sys_input().split())
+    answer: int = solve(A, B, C)
 
-    answer: int = pow(A, B, C)
     print(answer)
 
 
