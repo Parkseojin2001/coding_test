@@ -1,46 +1,46 @@
 import sys
-from collections import deque
+
+sys.setrecursionlimit(111111)
 
 def sys_input() -> None:
     return sys.stdin.readline().rstrip()
 
-def bfs(choice: list[int], visited: list[bool], start: int) -> int:
-    queue = deque([start])
-    visited[start] = True
-    visit_path = [start]
+def dfs(n: int, students: list[int], visited: list[bool], cycle: list[int], team_count) -> None:
+    visited[n] = True
+    cycle.append(n)
+    number = students[n]
 
-    while queue:
-        x = queue.popleft()
-        nx = choice[x]
-        if visited[nx]:
-            if nx in visit_path:
-                cycle_start = visit_path.index(nx)
-                visit_path = visit_path[:cycle_start]
-            break
-        visited[nx] = True
-        queue.append(nx)
-        visit_path.append(nx)
-    return len(visit_path)
+    if visited[number] == True:
+        if number in cycle:
+            idx = cycle.index(number)
+            team_count[0] += len(cycle) - idx
+            
+        return
+    else:
+        dfs(number, students, visited, cycle, team_count)
 
-def solve(n: int, choice: list[int]) -> int:
-    visited = [False] * n
-    no_team_cnt = 0
-    for student in range(n):
-        if not visited[student]:
-            no_team_cnt += bfs(choice, visited, student)
-    return no_team_cnt
-        
 
 
 def main() -> None:
     T = int(sys_input())
     for _ in range(T):
         n = int(sys_input())
-        choice = [int(x) - 1 for x in sys_input().split()]
+        students = [0] + list(map(int, sys_input().split()))
 
-        answer: int = solve(n, choice)
-        print(answer)
+        visited = [False] * (n + 1)
+        visited[0] = True
+        team_count = [0]
+
+        for i in range(1, n + 1):
+            if not visited[i]:
+                cycle = []
+                dfs(i, students, visited, cycle, team_count)
+        
+        print(n - team_count[0])
+
+        
 
 
 if __name__ == '__main__':
     main()
+
